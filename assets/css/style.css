@@ -1,0 +1,8 @@
+.jumbotron{
+    background-color: brown !important;
+    text-align: center;
+    color: white !important;
+}
+th,td{
+    padding: 15px !important;
+}
