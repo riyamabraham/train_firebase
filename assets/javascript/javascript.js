@@ -82,7 +82,7 @@ database.ref().orderByChild("dateAdded").on("child_added", function (snapshot) {
     row.append($("<td>").text(tMinutesTillTrain));
     
     $("#table").append(row);
-//this step clears the text field after inputting to the screen
+//this step clears the text field after inputting to the screen and databse
     $("#train_name").val('');
     $("#destination").val('');
     $("#time").val('');
