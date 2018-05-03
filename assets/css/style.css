@@ -1,8 +1,15 @@
 .jumbotron{
-    background-color: brown !important;
+    background-image:url('../images/train.jpg');
     text-align: center;
-    color: white !important;
+    color: white;
 }
 th,td{
-    padding: 15px !important;
+    padding: 15px;
+}
+.panel-default{
+    border-color: blue;
+}
+.panel-default>.panel-heading{
+    background-color: blue;
+    color: white;
 }
