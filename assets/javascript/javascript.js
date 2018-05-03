@@ -15,18 +15,29 @@ var train_name = '';
 var destination = '';
 var time = 0;
 var frequency = 0;
+/******************/
+
+/***********************/
 
 // Capture Button Click
 $("#btn").on("click", function (event) {
     event.preventDefault();
+    console.log("hi");
     // Grabbed values from text boxes
     train_name = $("#train_name").val().trim();
     destination = $("#destination").val().trim();
     var time = $("#time").val();
     var frequency = $("#frequency").val();
+    /**************************/
+    
 
-    console.log(time);
+    //this will prevent page from submitting an empty form
 
+    if ($.trim($("#destination").val()) === "" || $.trim($("#train_name").val()) === "" || $.trim($("#time").val()) === ""|| $.trim($("#frequency").val()) === "") {
+        alert('You did not fill out one or more of the fields');
+        return false;
+    }
+    
     database.ref().push({
         Train_name: train_name,
         Destination: destination,
@@ -37,6 +48,8 @@ $("#btn").on("click", function (event) {
     });
     
 });
+/*********************************/
+
 
 database.ref().orderByChild("dateAdded").on("child_added", function (snapshot) {
     var sv = snapshot.val();
@@ -44,9 +57,7 @@ database.ref().orderByChild("dateAdded").on("child_added", function (snapshot) {
     ///math
     console.log(sv.frequency);
     console.log(sv.Time);
-
-
-    // First Time (pushed back 1 year to make sure it comes before current time)
+ // First Time (pushed back 1 year to make sure it comes before current time)
     var firstTimeConverted = moment(sv.Time, "hh:mm").subtract(1, "years");
     console.log(firstTimeConverted);
 
@@ -69,24 +80,59 @@ database.ref().orderByChild("dateAdded").on("child_added", function (snapshot) {
     // Next Train
     var nextTrain = moment().add(tMinutesTillTrain, "minutes");
     console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
-
-
-
-
-
-    var row = $("<tr>");
+  var row = $("<tr>");
+  row.attr('id',"id");
     row.append($("<td>").text(sv.Train_name));
     row.append($("<td>").text(sv.Destination));
     row.append($("<td>").text(sv.frequency));
     row.append($("<td>").text(moment(nextTrain).format('LT')));
     row.append($("<td>").text(tMinutesTillTrain));
+
+    var update = $("<button>");
+    update.attr('id',"update");
+    
+    row.append(update.text("UPDATE"));
+    row.append($("<button>").attr('id',"remove").text("REMOVE"));
     
     $("#table").append(row);
+
+   
 //this step clears the text field after inputting to the screen and databse
     $("#train_name").val('');
     $("#destination").val('');
     $("#time").val('');
     $("#frequency").val('');
+
+    /***************************/
+  
+    /******************* */
 }, function (errorObject) {
     console.log("Errors handled: " + errorObject.code);
 });
+
+var rootRef = firebase.database().ref().child("traindetails");
+$("#table").on('click','#remove', function(e){
+    var $row = $(this).closest('tr'),
+       rowId = $row.data('id');
+    var assetKey = rootRef.child("id");
+    //it should remove the firebase object in here
+    rootRef.child(assetKey).remove()
+    //after firebase confirmation, remove table row
+    .then(function() {
+      $row.remove();
+    })
+    //Catch errors
+    .catch(function(error) {
+      console.log('ERROR');
+    });  
+});
+
+
+
+  
+
+
+
+
+
+
