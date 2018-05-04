@@ -3,6 +3,13 @@
     text-align: center;
     color: white;
 }
+
+table,th,td{
+    border: 1px solid black;
+}
+body{
+    background-image: url("../images/bg.jpg");
+}
 th,td{
     padding: 15px;
 }
